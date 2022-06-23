@@ -1,0 +1,2 @@
+object actitudMilitante{}
+object actitudMiedosa{}

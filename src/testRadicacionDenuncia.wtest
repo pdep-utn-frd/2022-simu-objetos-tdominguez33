@@ -1,0 +1,22 @@
+import Agresiones.*
+import Policia.*
+import Actitudes.*
+import Persona.*
+
+describe "Tests denuncias" {
+	var victimaMilitante = new Persona(actitud = actitudMilitante)
+	var victimaMiedosa = new Persona(actitud = actitudMiedosa)
+	
+
+test "Si Una Persona Militante Recibe Una Agresion Grave De Un Familiar La Denuncia Queda Registrada" {
+	victimaMilitante.agregarFamiliar("Tito")
+	victimaMilitante.recibirAgresion(new Agresion(lugar = "Casa", agresor = "Tito", palabras = ["te","voy","a","matar"]))
+	assert.that(policia.denunciaRegistradaPor(victimaMilitante))
+}
+test "Si Una Persona Miedosa Recibe Una Agresion Grave De Un Familiar La Denuncia No Queda Registrada" {
+	victimaMiedosa.agregarFamiliar("Tito")
+	victimaMiedosa.recibirAgresion(new AgresionFisica(lugar = "Casa", agresor = "Tito", palabras = ["te","voy","a","matar"],elemento = "combustible"))
+	assert.notThat(policia.denunciaRegistradaPor(victimaMiedosa))
+}
+
+}
