@@ -1,6 +1,6 @@
 # Ni una menos
 
-![](niUnaMEnos.jpg)
+![](niUnaMenos.jpg)
 
 ## Ejercicio de parcial
 

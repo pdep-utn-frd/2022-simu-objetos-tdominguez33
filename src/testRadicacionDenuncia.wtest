@@ -10,13 +10,12 @@ describe "Tests denuncias" {
 
 test "Si Una Persona Militante Recibe Una Agresion Grave De Un Familiar La Denuncia Queda Registrada" {
 	victimaMilitante.agregarFamiliar("Tito")
-	victimaMilitante.recibirAgresion(new Agresion(lugar = "Casa", agresor = "Tito", palabras = ["te","voy","a","matar"]))
+	victimaMilitante.recibirAgresion(new Agresion(lugar = "Casa", efectuadoPor = "Tito", palabrasUsadas = ["te","voy","a","matar"], esFisica = false))
 	assert.that(policia.denunciaRegistradaPor(victimaMilitante))
 }
 test "Si Una Persona Miedosa Recibe Una Agresion Grave De Un Familiar La Denuncia No Queda Registrada" {
 	victimaMiedosa.agregarFamiliar("Tito")
-	victimaMiedosa.recibirAgresion(new AgresionFisica(lugar = "Casa", agresor = "Tito", palabras = ["te","voy","a","matar"],elemento = "combustible"))
+	victimaMiedosa.recibirAgresion(new Agresion(lugar = "Casa", efectuadoPor = "Tito", palabrasUsadas = ["te","voy","a","matar"], elementoUtilizado = "combustible", esFisica = true))
 	assert.notThat(policia.denunciaRegistradaPor(victimaMiedosa))
 }
-
 }
