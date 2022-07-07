@@ -1,21 +1,25 @@
-import Agresiones.*
-import Policia.*
-import Actitudes.*
-import Persona.*
+import agresiones.*
+import policia.*
+import personas.*
 
 describe "Tests denuncias" {
-	var victimaMilitante = new Persona(actitud = actitudMilitante)
-	var victimaMiedosa = new Persona(actitud = actitudMiedosa)
+	const victimaMilitante = new Persona(actitud = militante, composicionFamiliar = ["padre", "hermano"])
+	const victimaMiedosa = new Persona(actitud = miedosa, composicionFamiliar = ["abuelo", "hermano"])
+	const victimaPaciente = new Persona(actitud = paciente, composicionFamiliar = ["abuelo", "hermano"], tolerancia = 2)
 	
-
-test "Si Una Persona Militante Recibe Una Agresion Grave De Un Familiar La Denuncia Queda Registrada" {
-	victimaMilitante.agregarFamiliar("Tito")
-	victimaMilitante.recibirAgresion(new Agresion(lugar = "Casa", efectuadoPor = "Tito", palabrasUsadas = ["te","voy","a","matar"], esFisica = false))
-	assert.that(policia.denunciaRegistradaPor(victimaMilitante))
-}
-test "Si Una Persona Miedosa Recibe Una Agresion Grave De Un Familiar La Denuncia No Queda Registrada" {
-	victimaMiedosa.agregarFamiliar("Tito")
-	victimaMiedosa.recibirAgresion(new Agresion(lugar = "Casa", efectuadoPor = "Tito", palabrasUsadas = ["te","voy","a","matar"], elementoUtilizado = "combustible", esFisica = true))
-	assert.notThat(policia.denunciaRegistradaPor(victimaMiedosa))
-}
+	test "Una persona militante recibe una agresión y la denuncia queda registrada" {
+		victimaMilitante.recibirAgresion(new Agresion(lugar = "Casa", agresor = "padre", palabras = ["te","voy","a","matar"]))
+		assert.that(policia.denunciasRegistradas() != [])
+	}
+	test "Una persona miedosa recibe agresión y la denuncia no queda registrada" {
+		victimaMiedosa.recibirAgresion(new Agresion(lugar = "Casa", agresor = "abuelo", palabras = ["te","voy","a","matar"]))
+		assert.that(policia.denunciasRegistradas() == [])
+	}
+	
+	test "Una persona paciente realiza la denuncia solo despues de superar la tolerancia" {
+	victimaPaciente.recibirAgresion(new Agresion(lugar = "Casa", agresor = "abuelo", palabras = ["te","voy","a","matar"]))
+	assert.that(policia.denunciasRegistradas() == [])
+	victimaPaciente.recibirAgresion(new Agresion(lugar = "Casa", agresor = "abuelo", palabras = ["te","voy","a","matar"]))
+	assert.that(policia.denunciasRegistradas() != [])
+	}
 }
